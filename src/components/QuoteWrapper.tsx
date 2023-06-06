@@ -12,7 +12,7 @@ function QuoteWrapper() {
   return (
     <div className="flex flex-col">
       {quotes.map((quote) => (
-        <Quote quote={quote} />
+        <Quote quote={quote} key={quote}/>
       ))}
     </div>
   );
