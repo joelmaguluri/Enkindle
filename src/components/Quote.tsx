@@ -10,7 +10,7 @@ function Quote({
   const [like, setLiked] = useState(true);
 
   return (
-    <div className="flex flex-col p-24 py-4 space-y-2 font-light">
+    <div className="flex flex-col py-4 space-y-2 font-light">
       <h1>
         {quote} - <span className="font-serif font-bold font-xl">{author}</span>
       </h1>
@@ -18,12 +18,13 @@ function Quote({
         Tags:
         <p className="pl-4 space-x-1 font-serif font-extralight">
           {tags.map((tag) => (
-            <span
+            <a
               className="p-[2px] text-xs text-gray-400 border-2 border-gray-400 rounded-md cursor-pointer"
               key={tag}
+              href={"/tags/" + tag}
             >
               {tag}
-            </span>
+            </a>
           ))}
         </p>
       </div>
