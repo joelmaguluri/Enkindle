@@ -23,7 +23,7 @@ router.get(async (req: CustomRequest, res: NextApiResponse) => {
       .limit(QUOTES_PER_PAGE);
 
     const quotes = await quotesCursor?.toArray();
-
+    console.log(quotes);
     res.status(200).json({
       page: page,
       quotes: quotes || [],
