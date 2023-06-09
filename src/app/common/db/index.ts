@@ -7,13 +7,11 @@ interface CustomRequest extends NextApiRequest {
   db?: Db;
 }
 
-const client = new MongoClient(process.env.DATABASE_URI || "");
-
 const router = createRouter<CustomRequest, NextApiResponse>();
 
 router.use(async (req, res, next) => {
-  req.dbClient = client;
-  req.db = client.db("Enkindle");
+  req.dbClient = await new MongoClient(process.env.DATABASE_URI || "");
+  req.db = await req.dbClient.db("Enkindle");
   console.log("connected");
   console.log(res);
   return next();

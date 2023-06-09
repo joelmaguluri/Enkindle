@@ -17,7 +17,7 @@ router.get(async (req: CustomRequest, res: NextApiResponse) => {
 
     const skipCount = (page - 1) * QUOTES_PER_PAGE;
 
-    const quotesCursor = quotesRef
+    const quotesCursor = await quotesRef
       ?.find({})
       .skip(skipCount)
       .limit(QUOTES_PER_PAGE);
