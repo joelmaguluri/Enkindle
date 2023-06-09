@@ -1,53 +1,64 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 
 import Quote from "./Quote";
-const quotes = [
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-  `I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best.
-`,
-];
+import axios, { AxiosResponse } from "axios";
 
+interface ApiResponse {
+  page: number;
+  totalPages: number;
+  quotes: any[];
+}
+
+interface Quote {
+  quote: string;
+  author: string;
+  tags: string[];
+}
 function QuoteWrapper() {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const range = Array.from({ length: 20 }, (_, index) => index);
+  const [quotes, setQuotes] = useState([]);
+  const getQuotesPerPage = async (page: number) => {
+    try {
+      const response: AxiosResponse<ApiResponse> = await axios.get(
+        `/api/quotes?page=${page}`
+      );
+      const jsonData = response.data;
+      return jsonData;
+    } catch (error) {
+      console.error("Error fetching quotes:", error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const jsonData: any = await getQuotesPerPage(
+          page == 0 ? page + 1 : page
+        );
+        setQuotes(jsonData.quotes);
+        console.log(jsonData);
+      } catch (error) {
+        // Handle error if needed
+        console.log("error");
+      }
+    };
+
+    fetchData();
+  }, [page]);
   return (
     <div className="flex flex-col ">
       <div className="mx-4">
-        {quotes.map((quote) => (
-          <Quote quote={quote} key={quote} />
+        {quotes.map((quote: Quote) => (
+          <Quote
+            quote={quote?.quote}
+            key={quote.quote}
+            author={quote.author}
+            tags={quote.tags}
+          />
         ))}
       </div>
 
@@ -63,7 +74,7 @@ function QuoteWrapper() {
             key={number}
             onClick={() => setPage(number)}
           >
-            {number}
+            {number + 1}
           </span>
         ))}
         <GoChevronRight className="w-10 h-10 fill-gray-400" />

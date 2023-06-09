@@ -1,14 +1,22 @@
-import admin from "firebase-admin";
-import serviceAccount from "../../../../serviceAccountKey.json";
-import { ServiceAccount } from "firebase-admin";
+import { MongoClient, Db } from "mongodb";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { createRouter } from "next-connect";
 
-if (!admin.apps.length) {
-  try {
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount as ServiceAccount),
-    });
-  } catch (error: any) {
-    console.log("Firebase admin initialization error", error.stack);
-  }
+interface CustomRequest extends NextApiRequest {
+  dbClient?: MongoClient;
+  db?: Db;
 }
-export default admin.firestore();
+
+const client = new MongoClient(process.env.DATABASE_URI || "");
+
+const router = createRouter<CustomRequest, NextApiResponse>();
+
+router.use(async (req, res, next) => {
+  req.dbClient = client;
+  req.db = client.db("Enkindle");
+  console.log("connected");
+  console.log(res);
+  return next();
+});
+
+export default router;

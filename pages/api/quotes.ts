@@ -1,38 +1,43 @@
+import router from "@/app/common/db";
+import { MongoClient, Db } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
-import db from "@/app/common/db";
-const QUOTES_PER_PAGE = 25;
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+interface CustomRequest extends NextApiRequest {
+  dbClient?: MongoClient;
+  db?: Db;
+}
+// Route handler
+router.get(async (req: CustomRequest, res: NextApiResponse) => {
+  const db = req?.db;
+  const QUOTES_PER_PAGE = 25;
   const page = parseInt(req.query.page as string) || 1; // Get the requested page number from the query parameters
 
   try {
-    const quotesRef = db.collection("quotes");
+    const quotesRef = await db?.collection("quotes");
+    console.log(quotesRef?.collectionName);
 
-    const totalQuotesSnapshot = await quotesRef.get();
-    const totalQuotesCount = totalQuotesSnapshot.size;
+    const skipCount = (page - 1) * QUOTES_PER_PAGE;
 
-    const totalPages = Math.ceil(totalQuotesCount / QUOTES_PER_PAGE);
+    const quotesCursor = quotesRef
+      ?.find({})
+      .skip(skipCount)
+      .limit(QUOTES_PER_PAGE);
 
-    const startIdx = (page - 1) * QUOTES_PER_PAGE;
-    const endIdx = startIdx + QUOTES_PER_PAGE;
-
-    const querySnapshot = await quotesRef
-      .orderBy("createdAt")
-      .startAt(startIdx)
-      .endAt(endIdx)
-      .get();
-    const quotes = querySnapshot.docs.map((doc) => doc.data());
+    const quotes = await quotesCursor?.toArray();
 
     res.status(200).json({
       page: page,
-      totalPages: totalPages,
-      quotes: quotes,
+      quotes: quotes || [],
     });
   } catch (error) {
     console.error("Error fetching quotes:", error);
     res.status(500).json({ error: "Error fetching quotes" });
   }
+});
+
+function onError(res: any): void {
+  res.status(500).end("Internal server error");
 }
+
+export default router.handler({
+  onError: onError,
+});
