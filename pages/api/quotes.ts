@@ -16,11 +16,18 @@ router.get(async (req: CustomRequest, res: NextApiResponse) => {
 
   try {
     const quotesRef = db?.collection("quotes");
-    const skipCount = (page - 1) * QUOTES_PER_PAGE;
+
+    const lastDoc = await quotesRef
+      ?.find({})
+      .limit(QUOTES_PER_PAGE)
+      .skip((page - 1) * QUOTES_PER_PAGE)
+      .toArray()
+      .then((docs) => docs[docs.length - 1]);
 
     const quotesCursor = quotesRef
-      ?.find({})
-      .skip(skipCount)
+      ?.find({
+        _id: { $gt: lastDoc?._id },
+      })
       .limit(QUOTES_PER_PAGE);
 
     const quotes = await quotesCursor?.toArray();
