@@ -1,7 +1,6 @@
 import router from "@/app/common/db";
 import { MongoClient, Db } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
-import { ServerResponse } from "http";
 
 interface CustomRequest extends NextApiRequest {
   dbClient?: MongoClient;
@@ -25,7 +24,7 @@ router.get(async (req: CustomRequest, res: NextApiResponse) => {
       .limit(QUOTES_PER_PAGE);
 
     const quotes = await quotesCursor?.toArray();
-
+    console.log(quotes);
     res.status(200).json({
       page: page,
       quotes: quotes || [],

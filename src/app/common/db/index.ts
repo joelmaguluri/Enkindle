@@ -12,8 +12,10 @@ const client = new MongoClient(process.env.DATABASE_URI || "");
 const router = createRouter<CustomRequest, NextApiResponse>();
 
 router.use(async (req, res, next) => {
+  console.log("connected");
   if (client.db.name !== "Enkindle") {
     await client.connect();
+    console.log("here");
   }
   req.dbClient = client;
   req.db = client.db("Enkindle");
