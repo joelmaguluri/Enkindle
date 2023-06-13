@@ -1,4 +1,3 @@
-"use client";
 import { raleway } from "../../pages/_app";
 import "./globals.css";
 
