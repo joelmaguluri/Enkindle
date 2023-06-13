@@ -12,7 +12,7 @@ export default function Home() {
     <main className="h-screen ">
       <div className="flex flex-col h-full space-y-8 ">
         <div className="flex flex-row items-center justify-between py-4 border-b-2 border-opacity-25 border-battleship-gray justify">
-          <h1 className="mx-6 font-mono text-3xl font-extrabold flex-nowrap">
+          <h1 className={"mx-6 text-3xl font-extrabold flex-nowrap "}>
             Enkindle
           </h1>
           <div className="inline-flex mr-12 space-x-6">

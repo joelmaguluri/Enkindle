@@ -1,21 +1,6 @@
 "use client";
-import { NextFont, NextFontWithVariable } from "next/dist/compiled/@next/font";
+import { raleway } from "../../pages/_app";
 import "./globals.css";
-import { Roboto, Raleway } from "next/font/google";
-
-export const raleway = Raleway({
-  weight: ["300", "400", "500", "700"],
-  style: ["normal", "italic"],
-  subsets: ["latin"],
-  display: "swap",
-});
-
-export const roboto = Roboto({
-  weight: ["300", "400", "500", "700"],
-  style: ["normal", "italic"],
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export const metadata = {
   title: "Create Next App",
