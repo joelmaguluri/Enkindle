@@ -1,8 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 
 import Quote from "./Quote";
+import React, { useEffect, useState } from "react";
+import {
+  BsChevronDoubleLeft,
+  BsChevronDoubleRight,
+  BsChevronLeft,
+  BsChevronRight,
+} from "react-icons/bs";
+
 import axios, { AxiosResponse } from "axios";
 
 interface ApiResponse {
@@ -50,25 +56,29 @@ function QuoteWrapper() {
     fetchData();
   }, [page]);
   return (
-    <div className="flex flex-col ">
-      <div className="mx-4">
-        {quotes.map((quote: Quote) => (
+    <div className="flex flex-col mx-4">
+      <div className="">
+        {quotes.map((quote: Quote, index) => (
           <Quote
             quote={quote?.quote}
             key={quote.quote}
             author={quote.author}
             tags={quote.tags}
+            border={index === 0 ? false : true}
           />
         ))}
       </div>
 
       <div className="flex justify-center w-full my-4 space-x-1 ">
-        <GoChevronLeft className="w-10 h-10 fill-gray-400" />
+        <div className="inline-flex space-x-1">
+          <BsChevronDoubleLeft className="w-10 h-10 fill-timberwolf" />
+          <BsChevronLeft className="w-10 h-10 fill-timberwolf" />
+        </div>
         {range.map((number) => (
           <span
-            className={`flex items-center justify-center w-10 h-10 text-lg border-2 rounded-full cursor-pointer ${
+            className={`flex items-center justify-center w-10 h-10 text-lg border-2 rounded-full cursor-pointer font-mono ${
               number === page
-                ? "bg-gray-200 text-gray-500"
+                ? "bg-timberwolf text-battleship-gray bg-opacity-40"
                 : "bg-white text-gray-700"
             }`}
             key={number}
@@ -77,7 +87,10 @@ function QuoteWrapper() {
             {number + 1}
           </span>
         ))}
-        <GoChevronRight className="w-10 h-10 fill-gray-400" />
+        <div className="inline-flex space-x-1">
+          <BsChevronRight className="w-10 h-10 fill-timberwolf" />
+          <BsChevronDoubleRight className="w-10 h-10 fill-timberwolf" />
+        </div>
       </div>
     </div>
   );

@@ -6,20 +6,29 @@ function Quote({
   author = "Some Author",
   quote = "",
   tags = ["dreams", "love", "reality", "sleep"],
+  border = true,
 }) {
   const [like, setLiked] = useState(true);
 
   return (
-    <div className="flex flex-col py-4 space-y-2 font-light">
-      <h1>
-        {quote} - <span className="font-serif font-bold font-xl">{author}</span>
-      </h1>
-      <div className="inline-flex font-bold">
-        Tags:
-        <p className="pl-4 space-x-1 font-serif font-extralight">
+    <div
+      className={
+        border
+          ? "border-silver border-t-2"
+          : "border-transparent mt-4  border-t-2"
+      }
+    >
+      <div className="flex flex-col space-y-4  py-3 font-light px-3">
+        <h1>
+          {quote} -{" "}
+          <span className="font-mono font-bold font-xl pt-2">{author}</span>
+        </h1>
+
+        <p className=" space-x-3 font-serif font-extralight">
           {tags.map((tag) => (
             <a
-              className="p-[2px] text-xs text-gray-400 border-2 border-gray-400 rounded-md cursor-pointer"
+              className="text-xs text-battleship-gray
+               px-3 py-1 bg-timberwolf rounded-xl cursor-pointer bg-opacity-30"
               key={tag}
               href={"/tags/" + tag}
             >
@@ -27,25 +36,26 @@ function Quote({
             </a>
           ))}
         </p>
-      </div>
-      <div className="flex flex-row self-end mr-10 space-x-4">
-        {like ? (
-          <>
-            <AiOutlineHeart
-              className="w-6 h-6 cursor-pointer fill-gray-400"
-              onClick={() => setLiked(!like)}
-            />
-            <BsHandThumbsDown className="w-6 h-6 cursor-pointer fill-gray-400" />
-          </>
-        ) : (
-          <>
-            <AiFillHeart
-              className="w-6 h-6 cursor-pointer fill-red-400"
-              onClick={() => setLiked(!like)}
-            />
-            <BsHandThumbsDown className="w-6 h-6 cursor-pointer fill-gray-400" />
-          </>
-        )}
+
+        <div className="flex flex-row self-end mr-10 space-x-4">
+          {like ? (
+            <>
+              <AiOutlineHeart
+                className="w-6 h-6 cursor-pointer fill-gray-400"
+                onClick={() => setLiked(!like)}
+              />
+              <BsHandThumbsDown className="w-6 h-6 cursor-pointer fill-gray-400" />
+            </>
+          ) : (
+            <>
+              <AiFillHeart
+                className="w-6 h-6 cursor-pointer fill-red-400"
+                onClick={() => setLiked(!like)}
+              />
+              <BsHandThumbsDown className="w-6 h-6 cursor-pointer fill-gray-400" />
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

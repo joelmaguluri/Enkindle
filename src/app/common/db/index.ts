@@ -1,5 +1,5 @@
 import { MongoClient, Db } from "mongodb";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { createRouter } from "next-connect";
 
 interface CustomRequest extends NextApiRequest {
@@ -7,13 +7,16 @@ interface CustomRequest extends NextApiRequest {
   db?: Db;
 }
 
+const client = new MongoClient(process.env.DATABASE_URI || "");
+
 const router = createRouter<CustomRequest, NextApiResponse>();
 
 router.use(async (req, res, next) => {
-  req.dbClient = await new MongoClient(process.env.DATABASE_URI || "");
-  req.db = await req.dbClient.db("Enkindle");
-  console.log("connected");
-  console.log(res);
+  if (client.db.name !== "Enkindle") {
+    await client.connect();
+  }
+  req.dbClient = client;
+  req.db = client.db("Enkindle");
   return next();
 });
 

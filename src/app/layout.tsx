@@ -1,7 +1,21 @@
+"use client";
+import { NextFont, NextFontWithVariable } from "next/dist/compiled/@next/font";
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Roboto, Raleway } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+export const raleway = Raleway({
+  weight: ["300", "400", "500", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export const roboto = Roboto({
+  weight: ["300", "400", "500", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata = {
   title: "Create Next App",
@@ -15,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={raleway.className}>{children}</body>
     </html>
   );
 }
