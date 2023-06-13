@@ -37,6 +37,7 @@ router.get(async (req: CustomRequest, res: NextApiResponse) => {
 });
 
 function onError(err: unknown, req: CustomRequest, res: NextApiResponse) {
+  console.log(err);
   res.status(500).end("Internal server error");
 }
 
