@@ -10,8 +10,8 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   return (
     <main className="h-screen ">
-      <div className="flex flex-col h-full space-y-8 ">
-        <div className="flex flex-row items-center justify-between py-4 border-b-2 border-opacity-25 border-battleship-gray justify">
+      <div className="flex flex-col h-full ">
+        <div className="flex flex-row items-center justify-between py-2 border-b-2 border-opacity-25 border-battleship-gray justify">
           <h1 className={"mx-6 text-3xl font-extrabold flex-nowrap "}>
             Enkindle
           </h1>
@@ -33,13 +33,16 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="inline-flex pb-4 space-x-2">
+        <div className="inline-flex py-1 pb-4 space-x-2">
           <div className="border-r-2 border-opacity-30 border-battleship-gray w-[80%]">
             <div className="pl-[15%] px-4 ">
               <QuoteWrapper />
             </div>
           </div>
+          <div className="py-6">
           <SuggestedAuthors />
+
+          </div>
         </div>
       </div>
     </main>
